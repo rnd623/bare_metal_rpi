@@ -12,3 +12,9 @@ put32:
 get32:
     ldr w0, [x0]      // Memuat nilai dari alamat yang ditunjuk oleh register x0 ke register w0.
     ret               // Mengembalikan eksekusi ke tempat pemanggilan.
+
+.globl get_el
+get_el:
+    mrs x0, CurrentEL
+    lsr x0, x0, #2
+    ret
