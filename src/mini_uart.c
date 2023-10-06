@@ -15,7 +15,7 @@ void uart_init() {
 
     REGS_AUX->enables = 1;  // Mengaktifkan akses ke mini UART (mu).
     REGS_AUX->mu_control = 0;  // Mematikan mini UART (mu).
-    REGS_AUX->mu_ier = 0;  // Menonaktifkan interrupt pada mini UART (mu).
+    REGS_AUX->mu_ier = 2;  // 
     REGS_AUX->mu_lcr = 3;  // Mengatur mode 8-bit pada mini UART (mu).
     REGS_AUX->mu_mcr = 0;  // Mengatur kontrol mode pada mini UART (mu).
 

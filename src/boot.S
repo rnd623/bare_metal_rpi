@@ -1,15 +1,34 @@
 #include "mm.h"  // Meng-include file header "mm.h" yang mungkin berisi definisi atau deklarasi yang diperlukan.
+#include "sysregs.h"
 
 .section ".text.boot"  // Mendefinisikan bagian dari kode sebagai ".text.boot".
 
 .globl _start  // Mendefinisikan _start sebagai simbol global agar dapat diakses dari luar modul.
-
 _start:  // Mendefinisikan titik awal dari program (_start).
     mrs x0, mpidr_el1  // Mengambil nilai dari register mpidr_el1 (Multiprocessor Affinity Register, EL1) dan memasukkannya ke dalam x0.
     and x0, x0, #0xFF  // Melakukan operasi bitwise AND antara x0 dan 0xFF (memaksa hanya 8 bit terendah yang relevan).
     cbz x0, master  // Jika hasil operasi cbz adalah 0 (zero), maka lompat ke label master.
+    b proc_hang
 
-master:  // Label master, akan dieksekusi jika cbz x0, master adalah false.
+master: // Label master, akan dieksekusi jika cbz x0, master adalah false.
+    ldr x0, =SCTLR_VALUE_MMU_DISABLED
+    msr sctlr_el1, x0
+
+    ldr x0, =HCR_VALUE
+    msr hcr_el2, x0
+
+    ldr x0, =SCR_VALUE
+    msr scr_el3, x0
+
+    ldr x0, =SPSR_VALUE
+    msr spsr_el3, x0
+
+    adr x0, el1_entry
+    msr elr_el3, x0
+
+    eret
+
+el1_entry:  
     adr x0, bss_begin  // Mendapatkan alamat dari label bss_begin dan memasukkannya ke dalam x0.
     adr x1, bss_end  // Mendapatkan alamat dari label bss_end dan memasukkannya ke dalam x1.
     sub x1, x1, x0  // Menghitung selisih antara x1 dan x0 dan menyimpannya di x1 (menghitung ukuran bss).

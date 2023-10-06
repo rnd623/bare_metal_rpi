@@ -7,6 +7,7 @@ delay:
 .globl put32
 put32:
     str w1, [x0]      // Menyimpan nilai register w1 (32-bit) ke alamat yang ditunjuk oleh register x0.
+    ret
 
 .globl get32
 get32:
