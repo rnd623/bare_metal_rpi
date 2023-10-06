@@ -2,7 +2,7 @@
 
 #include "common.h"
 
-//token git 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
+//token git https://github.com/rnd623/bare_metal_rpi.git
 
 void delay(u64 ticks);
 void put32(u64 address, u32 value);
